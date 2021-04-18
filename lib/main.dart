@@ -31,19 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedPageIndex = 0;
 
   static List<Widget> _pageList = [
-    CalculationPage(
-        calculate: (value1, value2){
-          return value1 + value2;
-        },
-        backgroundColor: Colors.amber,
-    ),
-    CalculationPage(
-        calculate: (value1, value2){
-          return value1 - value2;
-        },
-        backgroundColor: Colors.lightGreen,
-    ),
-    Container(),
+    AdditionPage(),
+    SubtractionPage(),
   ];
 
   @override
@@ -52,16 +41,15 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: _pageList[_selectedPageIndex],
+      body: IndexedStack(
+        index: _selectedPageIndex,
+        children: _pageList,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate),
             label: 'Addition',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calculate),
-            label: 'Subtraction',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate),
@@ -80,17 +68,20 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class CalculationPage extends StatefulWidget {
-  final double Function(double, double) _calculate;
-  final Color _backgroundColor;
-
   CalculationPage({
     Key key,
-    double Function(double, double) calculate,
-    Color backgroundColor
-  }) : this._calculate = calculate, this._backgroundColor = backgroundColor, super(key: key);
+  }) : super(key: key);
 
   @override
   _CalculationPageState createState() => _CalculationPageState();
+
+  double calculate({double value1, double value2}) {
+    return 0;
+  }
+
+  Color backgroundColor() {
+    return Colors.white;
+  }
 }
 
 class _CalculationPageState extends State<CalculationPage> {
@@ -123,7 +114,7 @@ class _CalculationPageState extends State<CalculationPage> {
     return Container(
       child: items,
       padding: EdgeInsets.fromLTRB(32, 0, 32, 0),
-      color: widget._backgroundColor,
+      color: widget.backgroundColor(),
     );
   }
 
@@ -151,7 +142,7 @@ class _CalculationPageState extends State<CalculationPage> {
           }
 
           setState(() {
-            _resultValue = widget._calculate(value1, value2);
+            _resultValue = widget.calculate(value1: value1, value2: value2);
           });
         },
         child: Text('計算', style: TextStyle(color: Colors.blue))
@@ -160,5 +151,29 @@ class _CalculationPageState extends State<CalculationPage> {
 
   Widget _buildResultText() {
     return Text('$_resultValue');
+  }
+}
+
+class AdditionPage extends CalculationPage {
+  @override
+  double calculate({double value1, double value2}) {
+    return value1 + value2;
+  }
+
+  @override
+  Color backgroundColor() {
+    return Colors.amber;
+  }
+}
+
+class SubtractionPage extends CalculationPage {
+  @override
+  double calculate({double value1, double value2}) {
+    return value1 - value2;
+  }
+
+  @override
+  Color backgroundColor() {
+    return Colors.lightGreen;
   }
 }
