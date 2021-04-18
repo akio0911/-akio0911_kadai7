@@ -43,7 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         backgroundColor: Colors.lightGreen,
     ),
-    Container(),
   ];
 
   @override
@@ -52,16 +51,15 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: _pageList[_selectedPageIndex],
+      body: IndexedStack(
+        index: _selectedPageIndex,
+        children: _pageList,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate),
             label: 'Addition',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calculate),
-            label: 'Subtraction',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate),
